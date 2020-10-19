@@ -43,7 +43,7 @@ public class ClassAnalyzer {
     }
 
     private void analyzeClass(ClassInfo c, ClassReader cr) {
-        cr.accept(new ClassVisitor(ASM5) {
+        cr.accept(new ClassVisitor(ASM7) {
             private String owner;
 
             @Override
@@ -70,7 +70,7 @@ public class ClassAnalyzer {
     }
 
     private void analyzeInterface(ClassInfo c, ClassReader cr) {
-        cr.accept(new ClassVisitor(ASM5) {
+        cr.accept(new ClassVisitor(ASM7) {
             private String owner;
 
             @Override
@@ -110,7 +110,7 @@ public class ClassAnalyzer {
     }
 
     private void analyzeClassOrInterface(ClassInfo c, ClassReader cr) {
-        cr.accept(new ClassVisitor(ASM5) {
+        cr.accept(new ClassVisitor(ASM7) {
             private String owner;
 
             @Override

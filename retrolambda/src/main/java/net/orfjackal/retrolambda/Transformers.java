@@ -104,7 +104,11 @@ public class Transformers {
     }
 
     private byte[] transform(ClassReader reader, ClassVisitorChain chain) {
-        return transform(reader.getClassName(), cv -> reader.accept(cv, 0), chain);
+// System.err.println("[JVDBG] Transformers, reader = " + reader);
+        return transform(reader.getClassName(), cv -> {
+// System.err.println("[JVDBG] Transform with reader " + reader+" will accept visitor " + cv);
+                   reader.accept(cv, 0);
+               }, chain);
     }
 
     private byte[] transform(String className, Consumer<ClassVisitor> reader, ClassVisitorChain chain) {
@@ -122,6 +126,7 @@ public class Transformers {
             next = new UpdateRenamedEnclosingMethods(next, analyzer);
             next = chain.wrap(next);
 
+// System.err.println("next = " + next);
             reader.accept(next);
             return writer.toByteArray();
 

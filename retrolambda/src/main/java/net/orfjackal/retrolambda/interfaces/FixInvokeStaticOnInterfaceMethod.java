@@ -11,7 +11,7 @@ import static org.objectweb.asm.Opcodes.*;
 public class FixInvokeStaticOnInterfaceMethod extends ClassVisitor {
 
     public FixInvokeStaticOnInterfaceMethod(ClassVisitor next) {
-        super(ASM5, next);
+        super(ASM7, next);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class FixInvokeStaticOnInterfaceMethod extends ClassVisitor {
     private static class MyMethodVisitor extends MethodVisitor {
 
         public MyMethodVisitor(MethodVisitor next) {
-            super(Opcodes.ASM5, next);
+            super(Opcodes.ASM7, next);
         }
 
         @Override

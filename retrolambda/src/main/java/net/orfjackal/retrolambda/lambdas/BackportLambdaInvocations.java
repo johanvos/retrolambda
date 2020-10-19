@@ -26,7 +26,8 @@ public class BackportLambdaInvocations extends ClassVisitor {
     private final EnclosingClass enclosingClass = new EnclosingClass();
 
     public BackportLambdaInvocations(ClassVisitor next, ClassAnalyzer analyzer) {
-        super(ASM5, next);
+        super(ASM7, next);
+System.err.println("BLI created with " + ASM7+" and next = " + next);
         this.analyzer = analyzer;
     }
 
@@ -174,7 +175,7 @@ public class BackportLambdaInvocations extends ClassVisitor {
     private class InvokeDynamicInsnConverter extends MethodVisitor {
 
         public InvokeDynamicInsnConverter(MethodVisitor next) {
-            super(ASM5, next);
+            super(ASM7, next);
         }
 
         @Override

@@ -24,7 +24,7 @@ public class BackportLambdaClass extends ClassVisitor {
     private String sourceDebug;
 
     public BackportLambdaClass(ClassVisitor next) {
-        super(ASM5, next);
+        super(ASM7, next);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class BackportLambdaClass extends ClassVisitor {
     private static class RemoveMagicLambdaConstructorCall extends MethodVisitor {
 
         public RemoveMagicLambdaConstructorCall(MethodVisitor next) {
-            super(ASM5, next);
+            super(ASM7, next);
         }
 
         @Override
@@ -155,7 +155,7 @@ public class BackportLambdaClass extends ClassVisitor {
 
         public CallPrivateImplMethodsViaAccessMethods(int access, String name, String desc, String signature,
                                                       String[] exceptions, MethodVisitor next) {
-            super(ASM5, access, name, desc, signature, exceptions);
+            super(ASM7, access, name, desc, signature, exceptions);
             this.next = next;
         }
 

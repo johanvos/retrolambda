@@ -9,13 +9,15 @@ import net.orfjackal.retrolambda.interfaces.MethodRef;
 import org.objectweb.asm.ClassVisitor;
 
 import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.ASM7;
 
 public class UpdateRenamedEnclosingMethods extends ClassVisitor {
 
     private final ClassAnalyzer analyzer;
 
     public UpdateRenamedEnclosingMethods(ClassVisitor next, ClassAnalyzer analyzer) {
-        super(ASM5, next);
+        super(ASM7, next);
+// System.err.println("UREM, next = " +next);
         this.analyzer = analyzer;
     }
 
@@ -24,4 +26,5 @@ public class UpdateRenamedEnclosingMethods extends ClassVisitor {
         MethodRef method = analyzer.getRenamedLambdaMethod(new MethodRef(0, owner, name, desc));
         super.visitOuterClass(method.owner, method.name, method.desc);
     }
+
 }

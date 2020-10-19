@@ -7,13 +7,14 @@ package net.orfjackal.retrolambda;
 import org.objectweb.asm.*;
 
 import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.ASM7;
 
 public class LowerBytecodeVersion extends ClassVisitor {
 
     private final int targetVersion;
 
     public LowerBytecodeVersion(ClassVisitor next, int targetVersion) {
-        super(ASM5, next);
+        super(ASM7, next);
         this.targetVersion = targetVersion;
     }
 
