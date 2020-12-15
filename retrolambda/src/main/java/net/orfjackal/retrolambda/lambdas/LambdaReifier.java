@@ -118,6 +118,7 @@ public class LambdaReifier {
         }
 
         MethodHandle bootstrapMethod = Types.toMethodHandle(bsm, cl, caller);
+System.err.println("[RL] bootstrapMethod = " + bootstrapMethod+", args = " + args);
         return (CallSite) bootstrapMethod.invokeWithArguments(args);
     }
 

@@ -27,7 +27,7 @@ public class BackportLambdaInvocations extends ClassVisitor {
 
     public BackportLambdaInvocations(ClassVisitor next, ClassAnalyzer analyzer) {
         super(ASM7, next);
-System.err.println("BLI created with " + ASM7+" and next = " + next);
+// System.err.println("BLI created with " + ASM7+" and next = " + next);
         this.analyzer = analyzer;
     }
 
