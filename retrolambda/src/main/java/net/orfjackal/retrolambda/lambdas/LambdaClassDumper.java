@@ -23,6 +23,7 @@ public class LambdaClassDumper implements AutoCloseable {
 
     public LambdaClassDumper(LambdaClassSaver lambdaClassSaver) {
         this.lambdaClassSaver = lambdaClassSaver;
+        // System.err.println("[RRLL] created LCD: "+this+" with saver = "+this.lambdaClassSaver);
     }
 
     public void install() {
@@ -33,14 +34,20 @@ public class LambdaClassDumper implements AutoCloseable {
             dumperField.setAccessible(true);
 
             Path p = new VirtualPath("");
-            dumperField.set(null, newProxyClassesDumper(p));
+            Object npcd = newProxyClassesDumper(p);
+            dumperField.set(null, npcd);
+            // System.err.println("[RRLL] LCD, install saver = "+lambdaClassSaver+", npcd = "+npcd);
         } catch (Exception e) {
+            System.err.println("ERROR INSTALL!");
+            e.printStackTrace();
             throw new IllegalStateException("Cannot initialize dumper; unexpected JDK implementation. " +
                     "Please run Retrolambda using the Java agent (enable forking in the Maven plugin).", e);
         }
     }
 
     public void uninstall() {
+        // System.err.println("[RRLL] LCD, uninstall saver = "+lambdaClassSaver);
+
         if (dumperField != null) {
             try {
                 dumperField.set(null, null);
@@ -72,7 +79,10 @@ public class LambdaClassDumper implements AutoCloseable {
         Class<?> dumper = Class.forName("java.lang.invoke.ProxyClassesDumper");
         Constructor<?> c = dumper.getDeclaredConstructor(Path.class);
         c.setAccessible(true);
-        return c.newInstance(dumpDir);
+        Object answer = c.newInstance(dumpDir);
+        System.err.println("[LCD] newProxyClassesDumper created for path "
+                +dumpDir+", answer = "+answer);
+        return answer;
     }
 
 
@@ -80,18 +90,31 @@ public class LambdaClassDumper implements AutoCloseable {
 
         @Override
         public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> options, FileAttribute<?>... attrs) {
+            // System.err.println("[RRLL] VFSP newByteChannel needed for path "+path+", saver = "+lambdaClassSaver);
             return new ClassChannel(path);
         }
 
         @Override
         public void createDirectory(Path dir, FileAttribute<?>... attrs) {
+            // System.err.println("[RRLL] VFSP need to create dir "+dir);
         }
+
+        @Override
+        public OutputStream newOutputStream(Path path, OpenOption... options) throws IOException {
+            OutputStream answer = super.newOutputStream(path, options); //To change body of generated methods, choose Tools | Templates.
+            // System.err.println("[RRLL] VFSP, newOutputStream asked for path = "+path+", answer = "+answer);
+
+            return answer;
+        }
+        
+        
     }
 
     private final class VirtualFS extends FakeFileSystem {
 
         @Override
         public FileSystemProvider provider() {
+            // System.err.println("[RRLL] VFS, provider asked, saver = "+lambdaClassSaver);
             return new VirtualFSProvider();
         }
     }
@@ -102,6 +125,7 @@ public class LambdaClassDumper implements AutoCloseable {
 
         public VirtualPath(String path) {
             this.path = path;
+            // System.err.println("[RRLL] VP created for path = "+path+" and saver = "+lambdaClassSaver+", result = "+super.toString());
         }
 
         @Override
@@ -116,6 +140,8 @@ public class LambdaClassDumper implements AutoCloseable {
 
         @Override
         public Path resolve(String other) {
+            Thread.dumpStack();
+            System.err.println("[LCD] VP "+super.toString()+" needs to resolve "+other+", saver = "+lambdaClassSaver);
             if (!path.isEmpty()) {
                 throw new IllegalStateException();
             }
@@ -134,6 +160,8 @@ public class LambdaClassDumper implements AutoCloseable {
         private final WritableByteChannel ch;
 
         public ClassChannel(Path path) {
+            // System.err.println("[RRLL] ClassChannel created for path "+path
+                    // +", saver = "+lambdaClassSaver+", this = "+this);
             this.path = path;
             this.os = new ByteArrayOutputStream();
             this.ch = Channels.newChannel(os);
@@ -148,6 +176,7 @@ public class LambdaClassDumper implements AutoCloseable {
         public void close() {
             String className = path.toString();
             className = className.substring(0, className.lastIndexOf(".class"));
+            // System.err.println("[RRLL] closing "+className+", use saver = "+lambdaClassSaver+" on CC "+this+" for path "+path);
             lambdaClassSaver.saveIfLambda(className, os.toByteArray());
         }
     }

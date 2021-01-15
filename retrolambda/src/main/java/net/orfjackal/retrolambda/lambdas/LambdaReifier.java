@@ -68,8 +68,8 @@ public class LambdaReifier {
     }
 
     public static void setLambdaClass(String lambdaClass) {
-        Thread.dumpStack();
-        System.err.println("[LR] push "+lambdaClass+" and thread = "+Thread.currentThread());
+        // Thread.dumpStack();
+        // System.err.println("[LR] push "+lambdaClass+" and thread = "+Thread.currentThread());
         currentLambdaClass.push(lambdaClass);
     }
 

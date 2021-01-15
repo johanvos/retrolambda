@@ -30,7 +30,7 @@ public class BackportLambdaClass extends ClassVisitor {
 
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-       Thread.dumpStack();
+       // Thread.dumpStack();
         System.err.println("[BPLC] Name = "+name+", superName = "+superName);
         lambdaClass = name;
         LambdaReifier.setLambdaClass(lambdaClass);
