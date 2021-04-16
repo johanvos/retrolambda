@@ -98,13 +98,13 @@ public class LambdaReifier {
 
     public static LambdaFactoryMethod getLambdaFactoryMethod() {
         String lambdaClass = currentLambdaClass.getFirst();
-        System.err.println("[LR] got LFM: "+lambdaClass);
+        // System.err.println("[LR] got LFM: "+lambdaClass);
         Type invokedType = currentInvokedType.getFirst();
         return new LambdaFactoryMethod(lambdaClass, invokedType);
     }
 
     private static void resetGlobals() {
-        System.err.println("[LR] resetGlobals, thread = "+Thread.currentThread());
+        // System.err.println("[LR] resetGlobals, thread = "+Thread.currentThread());
         currentLambdaImplMethod.clear();
         currentLambdaAccessMethod.clear();
         currentInvoker.clear();
@@ -126,7 +126,7 @@ public class LambdaReifier {
         }
 
         MethodHandle bootstrapMethod = Types.toMethodHandle(bsm, cl, caller);
-System.err.println("[RL] bootstrapMethod = " + bootstrapMethod+", args = " + args);
+// System.err.println("[RL] bootstrapMethod = " + bootstrapMethod+", args = " + args);
         return (CallSite) bootstrapMethod.invokeWithArguments(args);
     }
 
