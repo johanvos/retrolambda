@@ -80,8 +80,8 @@ public class LambdaClassDumper implements AutoCloseable {
         Constructor<?> c = dumper.getDeclaredConstructor(Path.class);
         c.setAccessible(true);
         Object answer = c.newInstance(dumpDir);
-        System.err.println("[LCD] newProxyClassesDumper created for path "
-                +dumpDir+", answer = "+answer);
+        // System.err.println("[LCD] newProxyClassesDumper created for path "
+                // +dumpDir+", answer = "+answer);
         return answer;
     }
 
@@ -140,8 +140,8 @@ public class LambdaClassDumper implements AutoCloseable {
 
         @Override
         public Path resolve(String other) {
-            Thread.dumpStack();
-            System.err.println("[LCD] VP "+super.toString()+" needs to resolve "+other+", saver = "+lambdaClassSaver);
+            // Thread.dumpStack();
+            // System.err.println("[LCD] VP "+super.toString()+" needs to resolve "+other+", saver = "+lambdaClassSaver);
             if (!path.isEmpty()) {
                 throw new IllegalStateException();
             }
